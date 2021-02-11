@@ -4,11 +4,12 @@ import tmp from "tmp"
 import exampleUDTFile from "./example.udt"
 import convertUDTFileToYOLODirectory from "../src/index"
 import { Dataset } from "../src/types"
+import rimraf from "rimraf"
 import { readdir } from "fs/promises"
 
 test("convert to yolo in temporary directory", async (t) => {
   const tmpDir = tmp.dirSync()
-  t.teardown(() => tmpDir.removeCallback())
+  t.teardown(() => rimraf.sync(tmpDir.name))
 
   await convertUDTFileToYOLODirectory(exampleUDTFile as Dataset, tmpDir.name)
 
