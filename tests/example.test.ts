@@ -1,9 +1,17 @@
 import test from "ava"
-import exampleUDTFile from "./example.udt.json"
-import convertUDTFileToYOLO from "../src/index"
+import tmp from "tmp"
+import exampleUDTFile from "./example.udt"
+import convertUDTFileToYOLODirectory from "../src/index"
+import { readdir } from "fs/promises"
 
 test("convert to yolo in temporary directory", async (t) => {
-  // TODO create temporary directory
-  // await convertUDTFileToYOLO(exampleUDTFile, tmpOutputDir)
-  // TODO read tmpOutputDir and make sure it has all the files it should have
+  const tmpDir = tmp.dirSync()
+  t.teardown(() => tmpDir.removeCallback())
+
+  await convertUDTFileToYOLODirectory(exampleUDTFile, tmpDir.name)
+
+  const files = await readdir(tmpDir.name)
+
+  // TODO make sure it has all the files it should have
+  console.log({ files })
 })

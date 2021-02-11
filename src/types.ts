@@ -18,6 +18,7 @@ export type DatasetInterfaceType =
 export type Dataset = {
   interface: {
     labels: Array<string | { id: string }>
+    type: DatasetInterfaceType
   }
   samples: Array<Sample>
 }
@@ -34,7 +35,7 @@ export interface BaseRegion {
 }
 
 export interface Box extends BaseRegion {
-  regionType: "box"
+  regionType: "bounding-box"
   centerX: number
   centerY: number
   width: number

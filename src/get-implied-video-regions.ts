@@ -4,7 +4,7 @@ import { Region } from "./types"
 const emptyArr: Array<any> = []
 
 export default (
-  keyframes: { [string]: { regions: Array<Region> } },
+  keyframes: Record<string, { regions: Array<Region> }>,
   time: number
 ): Array<Region> => {
   if (keyframes[(time || 0).toString()]) {
@@ -30,7 +30,10 @@ export default (
   const t2 = keyframeTimes[nextKeyframeTimeIndex]
   const nextKeyframe = keyframes[t2]
 
-  const [prevRegionMap, nextRegionMap] = [{}, {}]
+  const [prevRegionMap, nextRegionMap]: [
+    Record<string, Region>,
+    Record<string, Region>
+  ] = [{}, {}]
   for (const region of prevKeyframe.regions) prevRegionMap[region.id] = region
   for (const region of nextKeyframe.regions) nextRegionMap[region.id] = region
 
@@ -50,61 +53,61 @@ export default (
       })
       continue
     }
-    switch (prev.type) {
-      case "point": {
+    switch (prev.regionType) {
+      // case "point": {
+      //   impliedRegions.push({
+      //     ...prev,
+      //     highlighted: false,
+      //     editingLabels: false,
+      //     x: prev.x * w1 + next.x * w2,
+      //     y: prev.y * w1 + next.y * w2,
+      //   })
+      //   break
+      // }
+      case "bounding-box": {
         impliedRegions.push({
           ...prev,
           highlighted: false,
           editingLabels: false,
-          x: prev.x * w1 + next.x * w2,
-          y: prev.y * w1 + next.y * w2,
+          centerX: prev.centerX * w1 + next.centerX * w2,
+          centerY: prev.centerY * w1 + next.centerY * w2,
+          width: prev.width * w1 + next.width * w2,
+          height: prev.height * w1 + next.height * w2,
         })
         break
       }
-      case "box": {
-        impliedRegions.push({
-          ...prev,
-          highlighted: false,
-          editingLabels: false,
-          x: prev.x * w1 + next.x * w2,
-          y: prev.y * w1 + next.y * w2,
-          w: prev.w * w1 + next.w * w2,
-          h: prev.h * w1 + next.h * w2,
-        })
-        break
-      }
-      case "polygon": {
-        if (next.points.length === prev.points.length) {
-          impliedRegions.push({
-            ...prev,
-            highlighted: false,
-            editingLabels: false,
-            points: prev.points.map((pp, i) => [
-              pp[0] * w1 + next.points[i][0] * w2,
-              pp[1] * w1 + next.points[i][1] * w2,
-            ]),
-          })
-        } else {
-          impliedRegions.push(prev)
-        }
-        break
-      }
-      case "keypoints": {
-        const newPoints = {}
-        for (const [pointId, prevPoint] of Object.entries(prev.points)) {
-          newPoints[pointId] = {
-            x: prevPoint.x * w1 + next.points[pointId].x * w2,
-            y: prevPoint.y * w1 + next.points[pointId].y * w2,
-          }
-        }
-        impliedRegions.push({
-          ...prev,
-          highlighted: false,
-          editingLabels: false,
-          points: newPoints,
-        })
-        break
-      }
+      // case "polygon": {
+      //   if (next.points.length === prev.points.length) {
+      //     impliedRegions.push({
+      //       ...prev,
+      //       highlighted: false,
+      //       editingLabels: false,
+      //       points: prev.points.map((pp: any, i: number) => [
+      //         pp[0] * w1 + next.points[i][0] * w2,
+      //         pp[1] * w1 + next.points[i][1] * w2,
+      //       ]),
+      //     })
+      //   } else {
+      //     impliedRegions.push(prev)
+      //   }
+      //   break
+      // }
+      // case "keypoints": {
+      //   const newPoints = {}
+      //   for (const [pointId, prevPoint] of Object.entries(prev.points)) {
+      //     newPoints[pointId] = {
+      //       x: prevPoint.x * w1 + next.points[pointId].x * w2,
+      //       y: prevPoint.y * w1 + next.points[pointId].y * w2,
+      //     }
+      //   }
+      //   impliedRegions.push({
+      //     ...prev,
+      //     highlighted: false,
+      //     editingLabels: false,
+      //     points: newPoints,
+      //   })
+      //   break
+      // }
       default:
         break
     }
