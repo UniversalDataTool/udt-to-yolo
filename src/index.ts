@@ -23,9 +23,6 @@ export async function convertUDTFileToYOLODirectory(
     const sample = udtJSON.samples[i] as VideoSample
     await convertUDTSampleToYOLO({ sample, index: i, outputDir, labels })
   }
-
-  // TODO output top-level labels directory
-  fs.writeFileSync(path.join(outputDir, "labels.txt"), labels.join("\n"))
 }
 
 export default convertUDTFileToYOLODirectory

@@ -1,7 +1,7 @@
 import yargs from "yargs"
 import fs from "fs"
 import path from "path"
-import { udtToYOLODirectory } from "./index.js"
+import udtToYOLODirectory from "./index"
 
 const { argv } = yargs
   .usage("Usage: $0 path/to/dataset.udt.json -o yolo-output-dir")
@@ -19,9 +19,13 @@ const {
 async function main() {
   console.log("Main function ...")
   const ds = JSON.parse(fs.readFileSync(pathToFile).toString())
-  const fileName = path.basename(pathToFile).split(".").slice(0, -1).join(".")
+  const fileName = path
+    .basename(pathToFile as string)
+    .split(".")
+    .slice(0, -1)
+    .join(".")
 
-  await udtToYOLODirectory(ds, outputDir)
+  await udtToYOLODirectory(ds, outputDir as string)
 
   process.exit(0)
 }

@@ -6,6 +6,12 @@ YOLOv1.1 format.
 > Note: We do a variation on the YOLO format. Each sample gets it's own subdirectory which is a valid YOLO
 > dataset. We may change this in the future.
 
+## Usage
+
+```
+udt-to-yolo ./dataset.udt.json -o yolo-dir
+```
+
 ## YOLOv1.1 Format
 
 > There doesn't seem to be a formal spec for the YOLOv1.1 format, but the directory

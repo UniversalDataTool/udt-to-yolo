@@ -6,7 +6,9 @@ interface FrameDescription {
 
 export const convertVideoToFrames = async (
   videoPath: string
-): Array<FrameDescription> => {
+): Promise<Array<FrameDescription>> => {
   // TODO convert video into frames
   return []
 }
+
+export default convertVideoToFrames

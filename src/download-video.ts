@@ -8,7 +8,7 @@ export const downloadVideo = async (videoUrl: string) => {
   // TODO download the video to temp
   return {
     videoPath: "path/to/video",
-    deleteVideo: () => {
+    deleteVideo: async () => {
       // TODO delete downloaded video (unless cached)
     },
   }

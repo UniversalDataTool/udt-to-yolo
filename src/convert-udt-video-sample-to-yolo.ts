@@ -20,17 +20,25 @@ export async function convertUDTVideoSampleToYOLO({
   outputDir,
   labels,
 }: Params) {
-  await mkdirp(path.join(outputDir, `sample_${sampleIndex}`))
+  const sampleDir = path.join(outputDir, `sample_${sampleIndex}`)
+  await mkdirp(sampleDir)
+
+  const dataDir = path.join(sampleDir, "obj_train_data")
+  await mkdirp(dataDir)
 
   if (!sample?.annotation?.keyframes)
     throw new Error("No annotation/keyframes in sample!")
 
   const { videoPath, deleteVideo } = await downloadVideo(sample.videoUrl)
 
+  // --------------------------------
+  // GENERATE FRAME IMAGES + TXT FILES WITH BOUNDING BOXES
+  // --------------------------------
+
   const frames = await convertVideoToFrames(videoPath)
 
   for (const frame of frames) {
-    console.log(`Computing sample ${sampleIndex} frame ${frameIndex}`)
+    console.log(`Computing sample ${sampleIndex}, frame ${frame.frameIndex}`)
     const regions = getImpliedVideoRegions(
       sample.annotation.keyframes,
       frame.time
@@ -38,6 +46,29 @@ export async function convertUDTVideoSampleToYOLO({
     const yoloTxt = await getYOLOBoundingBoxesFromUDTRegions(regions, labels)
     fs.writeFileSync(frame.framePath.replace(/\.(png|jpg)$/, ".txt"), yoloTxt)
   }
+
+  // --------------------------------
+  // GENERATE TOP LEVEL FILES
+  // --------------------------------
+
+  fs.writeFileSync(
+    path.join(sampleDir, "obj.data"),
+    `
+classes = ${labels.length}
+train = data/train.txt
+names = data/obj.names
+backup = backup/
+`.trim()
+  )
+  fs.writeFileSync(path.join(sampleDir, "obj.names"), labels.join("\n"))
+  fs.writeFileSync(
+    path.join(sampleDir, "train.txt"),
+    frames.map((f) => f.framePath).join("\n")
+  )
+
+  // --------------------------------
+  // CLEAN UP
+  // --------------------------------
 
   await deleteVideo()
 }

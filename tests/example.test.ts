@@ -1,17 +1,25 @@
 import test from "ava"
+import path from "path"
 import tmp from "tmp"
 import exampleUDTFile from "./example.udt"
 import convertUDTFileToYOLODirectory from "../src/index"
+import { Dataset } from "../src/types"
 import { readdir } from "fs/promises"
 
 test("convert to yolo in temporary directory", async (t) => {
   const tmpDir = tmp.dirSync()
   t.teardown(() => tmpDir.removeCallback())
 
-  await convertUDTFileToYOLODirectory(exampleUDTFile, tmpDir.name)
+  await convertUDTFileToYOLODirectory(exampleUDTFile as Dataset, tmpDir.name)
 
-  const files = await readdir(tmpDir.name)
+  const files = await readdir(path.join(tmpDir.name, "sample_0"))
 
-  // TODO make sure it has all the files it should have
-  console.log({ files })
+  console.log("files:", files)
+
+  t.assert(files.includes("obj.data"))
+  t.assert(files.includes("obj.names"))
+  t.assert(files.includes("train.txt"))
+  t.assert(files.includes("obj_train_data"))
+
+  // TODO assert that each image in obj_train_data has a labels file
 })
