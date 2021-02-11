@@ -23,8 +23,8 @@ export async function convertUDTVideoSampleToYOLO({
   const sampleDir = path.join(outputDir, `sample_${sampleIndex}`)
   await mkdirp(sampleDir)
 
-  const dataDir = path.join(sampleDir, "obj_train_data")
-  await mkdirp(dataDir)
+  const framesDir = path.join(sampleDir, "obj_train_data")
+  await mkdirp(framesDir)
 
   if (!sample?.annotation?.keyframes)
     throw new Error("No annotation/keyframes in sample!")
@@ -35,7 +35,7 @@ export async function convertUDTVideoSampleToYOLO({
   // GENERATE FRAME IMAGES + TXT FILES WITH BOUNDING BOXES
   // --------------------------------
 
-  const frames = await convertVideoToFrames(videoPath)
+  const frames = await convertVideoToFrames({ videoPath, framesDir })
 
   for (const frame of frames) {
     console.log(`Computing sample ${sampleIndex}, frame ${frame.frameIndex}`)

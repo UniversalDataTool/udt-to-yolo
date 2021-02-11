@@ -4,9 +4,15 @@ interface FrameDescription {
   frameIndex: number
 }
 
-export const convertVideoToFrames = async (
+interface Params {
   videoPath: string
-): Promise<Array<FrameDescription>> => {
+  framesDir: string
+}
+
+export const convertVideoToFrames = async ({
+  videoPath,
+  framesDir,
+}: Params): Promise<Array<FrameDescription>> => {
   // TODO convert video into frames
   return []
 }
