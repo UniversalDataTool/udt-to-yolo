@@ -12,14 +12,18 @@
     "udt-to-cvat": "./bin/udt-to-yolo"
   },
   "dependencies": {
+    "@ffprobe-installer/ffprobe": "^1.1.0",
     "cli-progress": "^3.8.2",
     "color-rgba": "^2.1.1",
+    "download": "^8.0.0",
     "ffmpeg-extract-frames": "^2.0.2",
     "mkdirp": "^1.0.4",
+    "node-ffprobe": "^3.0.0",
     "tmp": "^0.2.1",
     "yargs": "^15.4.1"
   },
   "devDependencies": {
+    "@types/download": "^6.2.4",
     "@types/mkdirp": "^1.0.1",
     "@types/node": "^14.14.25",
     "@types/rimraf": "^3.0.0",

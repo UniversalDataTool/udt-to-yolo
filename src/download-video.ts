@@ -1,15 +1,35 @@
 import tmp from "tmp"
+import rimraf from "rimraf"
+import path from "path"
+import fs from "fs"
+import download from "download"
+
+const videoCacheDir = process.env.VIDEO_CACHE_DIR
 
 export const downloadVideo = async (videoUrl: string) => {
-  // TODO NOTE: you can cache the video here for development, use an
-  // enviornment variable to indicate if the video should be cached
-  // e.g. if (process.env.CACHE_VIDEOS) { ... }
+  let tmpObj: any, targetDir: any
+  if (videoCacheDir) {
+    targetDir = videoCacheDir
+  } else {
+    tmpObj = tmp.dirSync()
+    targetDir = tmpObj.name
+  }
 
-  // TODO download the video to temp
+  const fileName = path.basename(new URL(videoUrl).pathname)
+
+  if (!fs.existsSync(path.join(targetDir, fileName))) {
+    console.log(`Downloading ${videoUrl}...`)
+    await download(videoUrl, targetDir)
+  } else {
+    console.log(`Using cached ${videoUrl}...`)
+  }
+
   return {
-    videoPath: "path/to/video",
+    videoPath: path.join(targetDir, fileName),
     deleteVideo: async () => {
-      // TODO delete downloaded video (unless cached)
+      if (tmpObj) {
+        await (rimraf as any)(targetDir as any)
+      }
     },
   }
 }
