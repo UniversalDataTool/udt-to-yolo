@@ -29,16 +29,19 @@ export async function convertUDTVideoSampleToYOLO({
   if (!sample?.annotation?.keyframes)
     throw new Error("No annotation/keyframes in sample!")
 
-  const { videoPath, deleteVideo } = await downloadVideo(sample.videoUrl)
+  const { videoPath, videoName, deleteVideo } = await downloadVideo(
+    sample.videoUrl
+  )
 
   // --------------------------------
   // GENERATE FRAME IMAGES + TXT FILES WITH BOUNDING BOXES
   // --------------------------------
 
+  console.log(`Converting ${videoName} to frame images`)
   const frames = await convertVideoToFrames({ videoPath, framesDir })
 
+  console.log("Computing interpolated regions")
   for (const frame of frames) {
-    console.log(`Computing sample ${sampleIndex}, frame ${frame.frameIndex}`)
     const regions = getImpliedVideoRegions(
       sample.annotation.keyframes,
       frame.time

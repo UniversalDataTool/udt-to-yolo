@@ -37,7 +37,7 @@ export default (
   for (const region of prevKeyframe.regions) prevRegionMap[region.id] = region
   for (const region of nextKeyframe.regions) nextRegionMap[region.id] = region
 
-  const impliedRegions = []
+  const impliedRegions: Array<Region> = []
 
   // Weighted time coefficients for linear transition
   const w1 = (t2 - time) / (t2 - t1)

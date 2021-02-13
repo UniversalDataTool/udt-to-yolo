@@ -17,6 +17,7 @@
     "color-rgba": "^2.1.1",
     "download": "^8.0.0",
     "ffmpeg-extract-frames": "^2.0.2",
+    "fluent-ffmpeg": "^2.1.2",
     "mkdirp": "^1.0.4",
     "node-ffprobe": "^3.0.0",
     "tmp": "^0.2.1",

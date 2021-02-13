@@ -15,9 +15,9 @@ export const downloadVideo = async (videoUrl: string) => {
     targetDir = tmpObj.name
   }
 
-  const fileName = path.basename(new URL(videoUrl).pathname)
+  const videoName = path.basename(new URL(videoUrl).pathname)
 
-  if (!fs.existsSync(path.join(targetDir, fileName))) {
+  if (!fs.existsSync(path.join(targetDir, videoName))) {
     console.log(`Downloading ${videoUrl}...`)
     await download(videoUrl, targetDir)
   } else {
@@ -25,10 +25,11 @@ export const downloadVideo = async (videoUrl: string) => {
   }
 
   return {
-    videoPath: path.join(targetDir, fileName),
+    videoPath: path.join(targetDir, videoName),
+    videoName,
     deleteVideo: async () => {
       if (tmpObj) {
-        await (rimraf as any)(targetDir as any)
+        await new Promise((resolve) => rimraf(targetDir, resolve))
       }
     },
   }

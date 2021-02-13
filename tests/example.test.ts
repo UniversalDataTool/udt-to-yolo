@@ -22,5 +22,15 @@ test("convert to yolo in temporary directory", async (t) => {
   t.assert(files.includes("train.txt"))
   t.assert(files.includes("obj_train_data"))
 
-  // TODO assert that each image in obj_train_data has a labels file
+  const trainDataFiles = await readdir(
+    path.join(tmpDir.name, "sample_0", "obj_train_data")
+  )
+
+  console.log("train data files length:", trainDataFiles.length)
+  t.assert(trainDataFiles.length === 264)
+
+  t.assert(
+    trainDataFiles.map((f) => f.endsWith(".txt")).length ==
+      trainDataFiles.map((f) => f.endsWith(".jpg")).length
+  )
 })
