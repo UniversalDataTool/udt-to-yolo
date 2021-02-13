@@ -8,8 +8,11 @@ YOLOv1.1 format.
 
 ## Usage
 
+You'll need to have npm installed, then run the command below to
+convert the UDT file into the yolo directory.
+
 ```
-udt-to-yolo ./dataset.udt.json -o yolo-dir
+npx udt-to-yolo ./dataset.udt.json -o yolo-dir
 ```
 
 ## YOLOv1.1 Format

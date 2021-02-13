@@ -1,10 +1,11 @@
 {
   "name": "udt-to-cvat",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Severin Ibarluzea",
   "main": "src/index.js",
   "license": "MIT",
   "scripts": {
+    "build": "tsc -p .",
     "build:watch": "tsc -w -p .",
     "test": "ava tests/**.test.ts"
   },

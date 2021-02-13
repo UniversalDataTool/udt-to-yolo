@@ -1,7 +1,7 @@
 import test from "ava"
 import path from "path"
 import tmp from "tmp"
-import exampleUDTFile from "./example.udt"
+import exampleUDTFile from "./example.udt.json"
 import convertUDTFileToYOLODirectory from "../src/index"
 import { Dataset } from "../src/types"
 import rimraf from "rimraf"

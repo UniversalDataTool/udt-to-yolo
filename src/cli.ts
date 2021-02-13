@@ -17,7 +17,6 @@ const {
 } = argv
 
 async function main() {
-  console.log("Main function ...")
   const ds = JSON.parse(fs.readFileSync(pathToFile).toString())
   const fileName = path
     .basename(pathToFile as string)
@@ -26,8 +25,7 @@ async function main() {
     .join(".")
 
   await udtToYOLODirectory(ds, outputDir as string)
-
-  process.exit(0)
+  console.log("done!")
 }
 
 main()
