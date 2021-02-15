@@ -8,7 +8,7 @@ YOLOv1.1 format.
 
 ## Usage
 
-You'll need to have npm installed, then run the command below to
+You'll need to have npm installed and ffmpeg installed, then run the command below to
 convert the UDT file into the yolo directory.
 
 ```
